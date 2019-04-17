@@ -11,5 +11,8 @@
     "mongo"
   ],
   "author": "Ahmad Mirzaei (@a_m_dev)",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.4"
+  }
 }
