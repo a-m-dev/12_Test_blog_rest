@@ -6,8 +6,8 @@ const AppConfig = require('./util/AppConfig')
 const mongoose = require('mongoose')
 
 
-const userRoutes = require('./api/routes/user')
-
+const userRoutes = require('./api/routes/userRoute')
+const categoryRoutes = require('./api/routes/categoryRoute')
 
 
 
@@ -22,9 +22,12 @@ mongoose.connect('mongodb://localhost/u10q_blog',
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 
+
 // CORS
 app.use(( req, res, next ) => {
   res.header('Access-Control-Allow-Origin', '*')
+  res.header('X-Powered-By', 'Power of Js...')
+  res.header('X-XSS-Protection' , 0 );
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization')
   if(req.method === 'OPTIONS') {
     res.header('Access-Control-Allow-Methods', 'PUT, POST, PATCH, DELETE, GET')
@@ -41,6 +44,7 @@ app.use(( req, res, next ) => {
 
 // Rest Api EndPoints
 app.use(`/api/${AppConfig.apiVersion}/user`, userRoutes)
+app.use(`/api/${AppConfig.apiVersion}/category`, categoryRoutes)
 
 
 
