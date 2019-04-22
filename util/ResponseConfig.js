@@ -3,25 +3,17 @@
 module.exports = {
 
 
-  success: (code, message = { message: 'result was successful...' }, result) => {
+  success: (code, message = 'result was successful...' , result = {}) => {
     return {
-      meta: {
-        code, message
-      },
-      data: {
-        ...result,
-      }
+      meta: { code, message },
+      data: { ...result, }
     }
   },
 
   failure: (code, message, result = {}) => {
     return {
-      meta: {
-        code, message
-      },
-      data: {
-        ...result,
-      }
+      meta: { code, message },
+      data: { ...result, }
     }
   }
 

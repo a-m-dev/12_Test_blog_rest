@@ -29,10 +29,9 @@ router.get('/getCategoryList', (req, res, next) => {
           }
         })
       }
-      res.status(200).json(ResponseConfig.success(200, _res))
+      res.status(200).json(ResponseConfig.success.apply(this, [200, ...Array(1).concat([_res])]))
     })
     .catch( err => {
-      
       res.status(500).json(ResponseConfig.failure(500, err))
     })
 })
@@ -46,7 +45,6 @@ router.get('/getCategory/:catId', (req, res, next) => {
     .exec()
     .then( cat => {
       if(cat) {
-
         const _result = { category: cat }
 
         res.status(200).json(ResponseConfig.success.apply(this, [200, ...Array(1).concat([_result])]))
@@ -56,8 +54,8 @@ router.get('/getCategory/:catId', (req, res, next) => {
       }
     })
     .catch( err => {
-      console.log(err)
-      res.status(500).json({ error: err })
+      const msg = 'server error, probably the ID that is been provided is not correct...'
+      res.status(500).json(ResponseConfig.failure(500, msg))
     })
 })
 
