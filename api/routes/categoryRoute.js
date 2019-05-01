@@ -11,7 +11,7 @@ const Category = require('../models/categoryModel')
 // GET 
 router.get('/getCategoryList', (req, res, next) => {
   Category.find()
-    .select(' _id name, description isActive ')
+    .select(' _id name features description isActive ')
     .exec()
     .then( result => {
       const _res = {
@@ -21,11 +21,8 @@ router.get('/getCategoryList', (req, res, next) => {
             _id: cat._id,
             name: cat.name,
             description: cat.description,
+            featured: cat.features,
             isActive: cat.isActive,
-            // request: {
-            //   type: 'get',
-            //   url: `http://localhost:3010/api/1.0.0/category/getCategory/${cat._id}`
-            // }
           }
         })
       }
@@ -47,7 +44,8 @@ router.get('/getCategory/:catId', (req, res, next) => {
       if(cat) {
         const _result = { category: cat }
 
-        res.status(200).json(ResponseConfig.success.apply(this, [200, ...Array(1).concat([_result])]))
+        const msg = 'fetch successful...'
+        res.status(200).json(ResponseConfig.success(200, msg, _result))
       } else {
         const msg = 'there was no catogory like that...'
         res.status(404).json(ResponseConfig.failure(404, msg))
@@ -78,10 +76,6 @@ router.post('/createCategory', (req, res, next) => {
       const msg = 'Category is been created...'
       const _result = {
         createdCategory: { _id, name, description, isActive },
-        request: {
-          type: 'get',
-          url: `http://localhost:3010/api/1.0.0/category/${_id}`
-        }
       }
       res.status(201).json(ResponseConfig.success(201, msg, _result))
     })
@@ -94,8 +88,54 @@ router.post('/createCategory', (req, res, next) => {
 })
 
 
+// PUT
+router.put('/diactivateCategory', (req, res, next) => {
+  const { id } = req.body
 
-// PATCH 
-router.patch
+  Category
+    .findByIdAndUpdate(
+      { _id: id },
+      { $set: { isActive: false } },
+      { new: true }
+    )
+    .then( result => {
+      const msg = 'Category Diactivated Successfully...'
+      res.status(200).json(ResponseConfig.success(200, msg, result._doc))
+    }).catch( err => {
+      const msg = 'Cannot Diactivate the Category...'
+      res.status(405).json(ResponseConfig.failure(405, msg))
+    })
+})
+
+
+// DELETE 
+router.delete('/removeCategory', (req, res, next) => {
+  const { id } = req.body
+
+  Category // find first 
+    .findById(id)
+    .then( result => {
+
+      if(result !== null) {
+        Category
+          .findByIdAndRemove(id) // thene remove it
+          .then( result => {
+            const msg = 'Category Deleted Successfully...'
+            res.status(200).json(ResponseConfig.success(200, msg, result._doc))
+          }).catch( err => {
+            const msg = 'Cannot Delete the record...'
+            res.status(500).json(ResponseConfig.failure(500, msg))
+          })
+      } else {
+        const msg = 'there is no category like with that id...'
+        res.status(404).json(ResponseConfig.failure(404, msg))
+      }
+    })
+    .catch( err => {
+      const msg = 'there is no category like with that id...'
+      res.status(404).json(ResponseConfig.failure(404, msg))
+    })
+})
+
 
 module.exports = router;

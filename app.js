@@ -8,6 +8,7 @@ const mongoose = require('mongoose')
 
 const userRoutes = require('./api/routes/userRoute')
 const categoryRoutes = require('./api/routes/categoryRoute')
+const authorRoutes = require('./api/routes/authorRoute')
 
 
 
@@ -45,6 +46,7 @@ app.use(( req, res, next ) => {
 // Rest Api EndPoints
 app.use(`/api/${AppConfig.apiVersion}/user`, userRoutes)
 app.use(`/api/${AppConfig.apiVersion}/category`, categoryRoutes)
+app.use(`/api/${AppConfig.apiVersion}/author`, authorRoutes)
 
 
 
