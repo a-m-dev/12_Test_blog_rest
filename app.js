@@ -9,6 +9,7 @@ const mongoose = require('mongoose')
 const userRoutes = require('./api/routes/userRoute')
 const categoryRoutes = require('./api/routes/categoryRoute')
 const authorRoutes = require('./api/routes/authorRoute')
+const postRoutes = require('./api/routes/postRoute')
 
 
 
@@ -47,6 +48,7 @@ app.use(( req, res, next ) => {
 app.use(`/api/${AppConfig.apiVersion}/user`, userRoutes)
 app.use(`/api/${AppConfig.apiVersion}/category`, categoryRoutes)
 app.use(`/api/${AppConfig.apiVersion}/author`, authorRoutes)
+app.use(`/api/${AppConfig.apiVersion}/post`, postRoutes)
 
 
 

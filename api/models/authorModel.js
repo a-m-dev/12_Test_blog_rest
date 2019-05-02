@@ -15,9 +15,12 @@ const authorSchema = mongoose.Schema({
     { type: String },
   ],
   posts: [
-    { type: mongoose.Schema.Types.ObjectId, ref: 'Posts' } 
+    { type: mongoose.Schema.Types.ObjectId, ref: 'Post' } 
   ]
 })
 
 
-module.exports = mongoose.model('Author', authorSchema)
+module.exports = {
+  model: mongoose.model('Author', authorSchema),
+  propGeneral : ['social', 'name', 'position']
+}

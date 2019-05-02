@@ -76,10 +76,6 @@ router.post('/defineAuthor', (req, res, next) => {
       const msg = 'Author is been defined...'
       const response = {
         definedAuthor: { _id, name, position, email, password, quote, longDes },
-        request: {
-          type: 'GET',
-          url: `http://localhost:3010/api/1.0.0/author/${_id}`
-        }
       }
 
       res.status(201).json(ResponseConfig.success(201, msg, response))

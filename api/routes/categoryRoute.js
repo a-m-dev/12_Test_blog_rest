@@ -89,7 +89,7 @@ router.post('/createCategory', (req, res, next) => {
 
 
 // PUT
-router.put('/diactivateCategory', (req, res, next) => {
+router.put('/diactivateCategory', async (req, res, next) => {
   const { id } = req.body
 
   Category
@@ -105,6 +105,10 @@ router.put('/diactivateCategory', (req, res, next) => {
       const msg = 'Cannot Diactivate the Category...'
       res.status(405).json(ResponseConfig.failure(405, msg))
     })
+
+  // await Category.updateOne({
+  //   _id: id
+  // }, req.body)
 })
 
 
