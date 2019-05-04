@@ -19,7 +19,6 @@ const authorSchema = mongoose.Schema({
   ]
 })
 
-
 module.exports = {
   model: mongoose.model('Author', authorSchema),
   propGeneral : ['social', 'name', 'position']

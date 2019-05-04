@@ -10,7 +10,7 @@ const Author = require('../models/authorModel')
 
 // GET 
 router.get('/getAuthorList', (req, res, next) => {
-  Author.find()
+  Author.model.find()
     .select(' _id name position email quote longDes social posts')
     .exec()
     .then( result => {
@@ -41,7 +41,7 @@ router.get('/getAuthorList', (req, res, next) => {
 router.get('/getAuthor/:authorId', (req,res, next) => {
   const authorId = req.params.authorId
 
-  Author.findById(authorId)
+  Author.model.findById(authorId)
     .select(' _id name position email quote longDes social posts ')
     .exec()
     .then( author => {
@@ -64,7 +64,7 @@ router.get('/getAuthor/:authorId', (req,res, next) => {
 router.post('/defineAuthor', (req, res, next) => {
   const { name, position, email, password, quote, longDes } = req.body
 
-  const author = new Author({
+  const author = Author.model({
     name, position, email, password, quote, longDes
   })
 
@@ -81,6 +81,7 @@ router.post('/defineAuthor', (req, res, next) => {
       res.status(201).json(ResponseConfig.success(201, msg, response))
     })
     .catch( err => {
+      console.log(err)
       const msg = 'Cannot define Author...'
       res.status(500).json(ResponseConfig.failure(500, msg))
     })
@@ -91,14 +92,14 @@ router.post('/defineAuthor', (req, res, next) => {
 
 
 // DELETE
-router.delete('/removeAuthor', (req, res, next) => {
-  const { id } = req.body 
-  
-  Author.findById(id)
+router.delete('/removeAuthor/:authorId', (req, res, next) => {
+  const id = req.params.authorId
+
+  Author.model.findById(id)
     .then( author => {
       
       if(author) {
-        Author.findByIdAndRemove(id)
+        Author.model.findByIdAndRemove(id)
           .then( result => {
             const msg = 'author deleted successfully...'
             res.status(200).json(ResponseConfig.success(200, msg, result._doc))
