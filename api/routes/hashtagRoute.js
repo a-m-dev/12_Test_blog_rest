@@ -4,7 +4,6 @@ const router = express.Router()
 
 const RequestConfig = require('../../util/ResponseConfig')
 
-
 const Hashtag = require('../models/hashtagsModel')
 
 
@@ -41,15 +40,29 @@ router.post('/getHashtag/:hashtagId', async(req, res, next) => {
       const msg = 'there is no hashtag like that...'
       res.status(500).json(RequestConfig.failure(500, msg))
     }
+    
+    const hashtag = new Hashtag.modle({
+      ...data
+    })
 
     try {
 
+      let result = await hashtag.save()
       
-
+      const msg = 'hashtag is been created...'
+      res.status(201).json(RequestConfig.success(201, msg, result._doc))
     } catch(err) {
-
+      const msg = 'there was a problem in saving author...'
+      res.status(500).json(RequestConfig.failure(500, msg))
     }
   } catch(err) {
-
+    const msg = 'there was a server problem in saving the hashtag...'
+    res.status(500).json(RequestConfig.failure(500, msg))
   }
 })
+
+
+
+
+
+module.exports = router
