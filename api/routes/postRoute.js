@@ -20,10 +20,9 @@ router.get('/getPostList', async (req, res, next) => {
       // .exec()
 
     const _res = {
-      count: findResult.count,
+      count: findResult.length,
       posts: findResult.map( post => ({
-        count: findResult.length,
-        posts: post._doc
+        ...post._doc
       }))
     }
 
@@ -151,6 +150,7 @@ router.put('/editPost/:postId', async(req, res, next) => {
     try {
       const newPost = Object.assign({}, postData._doc, {...toBeUpdated})
       const updationResult = await Post.findByIdAndUpdate({ _id: postId }, newPost, { new: true })
+        .populate('author', Author.model.propGeneral)
 
       const msg = 'post is been updated...'
       res.status(200).json(ResponseConfig.success(200, msg, updationResult._doc))
