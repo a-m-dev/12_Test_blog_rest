@@ -11,6 +11,7 @@ const categoryRoutes = require('./api/routes/categoryRoute')
 const authorRoutes = require('./api/routes/authorRoute')
 const postRoutes = require('./api/routes/postRoute')
 const hashtagRoutes = require('./api/routes/hashtagRoute')
+const feedbackRoutes = require('./api/routes/feedbackRoute')
 
 
 
@@ -51,6 +52,7 @@ app.use(`/api/${AppConfig.apiVersion}/category`, categoryRoutes)
 app.use(`/api/${AppConfig.apiVersion}/author`, authorRoutes)
 app.use(`/api/${AppConfig.apiVersion}/post`, postRoutes)
 app.use(`/api/${AppConfig.apiVersion}/hashtag`, hashtagRoutes)
+app.use(`/api/${AppConfig.apiVersion}/feedback`, feedbackRoutes)
 
 
 
