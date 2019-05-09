@@ -19,14 +19,16 @@ router.get('/getMedia/:mediaHash', async(req, res, next) => {
   const hash = req.params.mediaHash
 
   try {
-    const found = await testMedia.model.findById({_id: hash})
-    res.sendFile(found._doc.filePath)
-    // res.status(200).json(ResponseConfig.success(200, 'found...', found._doc))
+    await testMedia.model.findOne({hash: hash}, (err, file) => {
+      if(err) res.status(404).json(ResponseConfig.failure(404, 'there was a problem fetching image...'))
+      // console.log(file.filePath)
+      // console.log(process.cwd())
+      res.status(200).sendFile(`${process.cwd()}/${file.filePath.slice(1)}`)
+    })
   } catch(err) {
     const msg = 'failed to fetch image...'
     res.status(500).json(ResponseConfig.failure(500, msg))
   }
-
 })
 
 
@@ -62,6 +64,7 @@ router.post('/mediaUpload', upload.single('file'), async (req, res, next) => {
 
   } catch( err ) {
     const msg = 'file could not be saved ...'
+    console.log({ err })
     res.status(500).json(ResponseConfig.failure(500, msg))
   }
 })
